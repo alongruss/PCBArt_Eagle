@@ -18,6 +18,7 @@ Working features:
 * logs functions to log file.
 
 TODO:
+* format and refactor code (unreadable atm).
 * check for image file validity in format, filesize, number of pixels.
 * commit to the main 6 layers by having a hardcoded DEFAULT state.
 * fit layer preview images to app size.
