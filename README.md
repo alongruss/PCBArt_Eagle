@@ -4,7 +4,7 @@ Last edited: 31/10/16.
 Created by: Alon Gruss.
 
 Converts an image into a 2-layerd PCB Eagle .brd file
-brigthness values -> layer combinations.
+(brigthness values -> layer combinations).
 
 Working features:
 * loads image files.
