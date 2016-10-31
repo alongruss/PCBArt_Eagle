@@ -312,18 +312,8 @@ void brd_close() {
 void output_brd() {
   setup_brd_file();
   output_brd_prefix();
-
-  for (int i=0; i<number_of_thumbs; i++) {
-    image_array[i+2].loadPixels();
-    for (int y=0; y<image_array[i+2].height; y++) {
-      for (int x=0; x<image_array[i+2].width; x++) {
-        float pixel_value = image_array[i+2].pixels[x+y*image_array[i+2].width] >> 16 & 0xFF;
-        if (pixel_value>127) {
-          if (i==0) output_rect_at(1, x*0.1, (image_array[i+2].height-y)*0.1, 0.1, 0.1);
-          else output_rect_at(15+i, x*0.1, (image_array[i+2].height-y)*0.1, 0.1, 0.1);
-        }
-      }
-    }
+  for (int i=0; i<brd_layer_string.length; i++) {
+    output.println(brd_layer_string[i]);
   }
   output_brd_suffix();
   brd_close();
@@ -331,7 +321,7 @@ void output_brd() {
 
 String output_rect_at(int _layer, float _xpos, float _ypos, float _width, float _height) {
   String output;
-  output = ("<rectangle x1=\""+_xpos+"\" y1=\""+_ypos+"\" x2=\""+(_xpos+_width)+"\" y2=\""+(_ypos+_height)+"\" layer=\""+_layer+"\"/>");
-  debug_log_output(output);
+  output = ("<rectangle x1=\""+_xpos+"\" y1=\""+_ypos+"\" x2=\""+(_xpos+_width)+"\" y2=\""+(_ypos+_height)+"\" layer=\""+_layer+"\"/>"+"\n");
+  //debug_log_output(output);
   return output;
 }
