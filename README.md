@@ -1,7 +1,7 @@
 # PCBArt_Eagle
-Version 0.1
-Last edited: 31/10/16
-Created by: Alon Gruss
+Version 0.1.
+Last edited: 31/10/16.
+Created by: Alon Gruss.
 
 Converts an image into a 2-layerd PCB Eagle .brd file
 brigthness values -> layer combinations.
