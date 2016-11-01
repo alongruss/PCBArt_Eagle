@@ -1,6 +1,6 @@
 # PCBArt_Eagle
 Version 0.1.
-Last edited: 31/10/16.
+Last edited: 1/11/16.
 Created by: Alon Gruss.
 
 Converts an image into a 2-layerd PCB Eagle .brd file
@@ -21,8 +21,7 @@ TODO:
 * format and refactor code (unreadable atm).
 * check for image file validity in format, filesize, number of pixels.
 * commit to the main 6 layers by having a hardcoded DEFAULT state.
-* fit layer preview images to app size.
 * progress bar?
 * import existing .brd file.
 * option for SVG vector files using the Geomartive library.
-* consolidate log file writing method with .brd export method.
+* consolidate log file writing method with .brd export method.?
