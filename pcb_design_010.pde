@@ -3,13 +3,12 @@ PCBArt
  ------
  
  Program by: Alon Gruss.
- Last Edited in: 31/10/16.
+ Last Edited in: 1/11/16.
  */
 
 
 /*
  TODO:
- - find out how to import into eagle per layer.
  - create console bar at bottom of prgoram.
  - remove unused PImage (last in array).
  - reshape open and save GUI.
@@ -18,36 +17,45 @@ PCBArt
 
 
 /////////////////////////safe-zone-start/////////////////////////////
-/////////////////////////safe-zone-finish/////////////////////////////
-
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import g4p_controls.*;
 
 
-GGroup grpMain;
-GCustomSlider[] slider_array;
-GButton b_open;
-GButton b_export;
+
+/*
+  DEBUG CONTROLS
+ --------------
+ */
+boolean DEBUG_LOG_TO_FILE = true;
+boolean DEBUG_DEFAULTS = true;
 
 
+/*
+  DEFAULTS
+ --------------
+ */
+int DEFAULT_NUMBER_OF_ITERATIONS = 4;
+int DEFAULT_WINDOW_WIDTH = 1333;
+int DEFAULT_WINDOW_HEIGHT = 500;
+
+/*
+  QUADTREE
+ --------------
+ */
+// algorithem properties:
+int number_of_iterations = 4;
+PGraphics offscreen_buffer;
+
+
+/*
+  GRAPHICAL
+ --------------
+ */
+// basic graphic properties:
 PFont font;
-
-IntDict layer_index_dict;
-PrintWriter output;
-String brd_prefix_string;
-String[] brd_layer_string;
-String brd_suffix_string;
-
-
-boolean DEBUG_MODE_1 = false;
-boolean DEBUG_MODE = true;
-boolean DEBUG_AUTO_IMAGE_LOAD = true;
-boolean DEBUG_AUTO_IMAGE_SLICE = true;
 PImage[] image_array;
 PGraphics pg_preview;
-String time_stamp = nf(hour())+nf(minute())+nf(second());
 int number_of_thumbs;
 int number_of_thumbs_squared;
 int size_of_thumb;
@@ -55,31 +63,75 @@ int thumb_gap;
 int result_width;
 int result_height;
 
-int number_of_iterations = 6;
+/*
+  UX/UI
+ --------------
+ */
 
-PGraphics offscreen_buffer;
+GGroup grpMain;
+GCustomSlider[] slider_array;
+GButton b_open;
+GButton b_export;
+
+
 
 /*
 FILE I/O
  --------------
  */
-// file saving
+
+String time_stamp = nf(hour())+nf(minute())+nf(second());
+
+
+// log file saving:
 BufferedWriter writer = null;
 String filename = "";
 String file_location = "";
 String line_buffer = "";
 
+// brd (Eagle) file saving:
+IntDict layer_index_dict;
+PrintWriter output;
+String brd_prefix_string;
+String[] brd_layer_string;
+String brd_suffix_string;
+
+/////////////////////////safe-zone-finish/////////////////////////////
+
+boolean DEBUG_MODE_1 = false;
+boolean DEBUG_MODE = true;
+boolean DEBUG_AUTO_IMAGE_LOAD = true;
+boolean DEBUG_AUTO_IMAGE_SLICE = true;
+
+
+
+
+/////////////////////////safe-zone-start/////////////////////////////
 void settings() {
-  size(1500, 500);
+  if (DEBUG_DEFAULTS) {
+    size(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+  } else {
+    size(1500, 500);
+  }
   noSmooth();
 }
 
 void setup() {
-  setup_file();
-  
+  surface.setTitle("PCB as ART");
+  setup_log_file();
   setup_layer_indices();  
   setup_brd_strings();
-  surface.setTitle("PCB as ART");
+
+
+
+
+  /////////////////////////safe-zone-finish/////////////////////////////
+
+
+
+
+
+
   font = createFont("arial.ttf", 24);
   result_width = 500;
   result_height = 500;
@@ -93,7 +145,12 @@ void setup() {
 
   number_of_thumbs= image_array.length-3;
   number_of_thumbs_squared = ceil(sqrt(number_of_thumbs));
-  size_of_thumb = int(height/float(number_of_thumbs_squared));
+
+  if (DEBUG_DEFAULTS) {
+    size_of_thumb = int(height/3);
+  } else {
+    size_of_thumb = int(height/float(number_of_thumbs_squared));
+  }
   thumb_gap = 1;
 
   slider_array = new GCustomSlider[number_of_thumbs];
@@ -132,20 +189,18 @@ void setup() {
 
 
   if (DEBUG_AUTO_IMAGE_LOAD) {
-    //image_array[0]=loadImage("6fvwkqsr.jpg");
-    image_array[0]=loadImage("alongruss.jpg");
+    image_array[0]=loadImage("6fvwkqsr.jpg");
+    //image_array[0]=loadImage("alongruss.jpg");
     //debug_log_output("image loaded");
     //debug_log_output("image width: " + image_array[0].width);
     //debug_log_output("image height: " + image_array[0].height);
     image_array[1].copy(image_array[0], 0, 0, image_array[0].width, image_array[0].height, 0, 0, image_array[1].width, image_array[1].height);
-    
   }
 
   if (DEBUG_AUTO_IMAGE_SLICE) {
     slice_to_layers(image_array[1]);
-    
   }
-  
+
   log_to_file(Thread.currentThread().getStackTrace()[1].getMethodName(), '\n');
 }
 
@@ -196,8 +251,11 @@ void draw() {
   pg_preview.blend(image_array[image_array.length-2], 0, 0, pg_preview.width, pg_preview.height, 0, 0, pg_preview.width, pg_preview.height, LIGHTEST);
   //pg_preview.image(image_array[image_array.length-2], 0, 0, pg_preview.width, pg_preview.height);
   pg_preview.endDraw();
-
-  image(pg_preview, height*2, 0, height, height);
+  if (DEBUG_DEFAULTS) {
+    image(pg_preview, 500+333, 0, height, height);
+  } else {
+    image(pg_preview, height*2, 0, height, height);
+  }
 }
 
 
@@ -279,28 +337,29 @@ PImage run_threshold(PImage _source_image, PImage _input_image, float _input_val
 void keyPressed() {
   log_to_file("Entering " + Thread.currentThread().getStackTrace()[1].getMethodName(), '\n');
   log_to_file("key pressed: "+ key, '\n');
-  
-  
+
+
   if (key == 'o') {
     File default_folder = new File( sketchPath("")+"/ ");
     selectInput("Select a file to process:", "fileSelected", default_folder);
   } else if (key == 't') {
     //copy_image(input_image_1, pg_TOP);
     image_array[1].copy(image_array[0], 0, 0, image_array[0].width, image_array[0].height, 0, 0, image_array[1].width, image_array[1].height);
-   
   } else if (key == 'b') {
     convert_to_BW(image_array[1], 1);
-  
   } else if (key == 'u') {
     slice_to_layers(image_array[1]);
-   
   } else if (key == 's') {
     export_to_layers();
     exit();
   } else if (key == 'k') {
     for (int i=0; i<number_of_thumbs; i++) {
       debug_log_output(i+" of "+number_of_thumbs);
-      image_array[2+i]=quadtree(image_array[2+i], number_of_iterations,i);
+      if (DEBUG_DEFAULTS) {
+        image_array[2+i]=quadtree(image_array[2+i], DEFAULT_NUMBER_OF_ITERATIONS, i);
+      } else {
+        image_array[2+i]=quadtree(image_array[2+i], number_of_iterations, i);
+      }
     }
   } else {
   }
@@ -317,11 +376,9 @@ void fileSelected(File selection) {
     // debug_log_output("image width: " + image_array[0].width);
     //debug_log_output("image height: " + image_array[0].height);
     image_array[1].copy(image_array[0], 0, 0, image_array[0].width, image_array[0].height, 0, 0, image_array[1].width, image_array[1].height);
-  
   }
 }
 
 void debug_log_output(String input) {
-  println(input);
-
+  //println(input);
 }

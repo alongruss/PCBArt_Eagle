@@ -1,5 +1,5 @@
 void setup_brd_file() {
-  output = createWriter("exports/"+time_stamp+"/positions.brd");
+  output = createWriter(file_location+"\\"+"positions.brd");
 }
 
 void setup_brd_strings() {

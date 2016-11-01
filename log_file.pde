@@ -1,7 +1,7 @@
 //log_to_file(Thread.currentThread().getStackTrace()[1].getMethodName(), '\n');
 
 
-void setup_file() {
+void setup_log_file() {
   filename = generate_filename();
   file_location = generate_file_location();
   create_file();
@@ -49,9 +49,11 @@ String  generate_timestamp() {
 }
 
 void log_to_file(String _input, char _delim) {
-  line_buffer+=_input+_delim;
-  if (_delim == '\n') {
-    write_line();
+  if (DEBUG_LOG_TO_FILE) {
+    line_buffer+=_input+_delim;
+    if (_delim == '\n') {
+      write_line();
+    }
   }
 }
 

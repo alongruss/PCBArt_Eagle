@@ -1,15 +1,21 @@
 PImage quadtree(PImage _input_image, int _number_of_iterations, int _string_index) {
+  log_to_file("Entering " + Thread.currentThread().getStackTrace()[1].getMethodName(), '\n');
   offscreen_buffer = createGraphics(_input_image.width, _input_image.height);
+   offscreen_buffer.beginDraw();
+    offscreen_buffer.background(255);
+     offscreen_buffer.endDraw();
   _input_image.loadPixels();
   brd_layer_string[_string_index] = "";
   run_split(_input_image, 0, 0, _input_image.width, _input_image.height, _number_of_iterations, _string_index);
+  log_to_file("Exiting " + Thread.currentThread().getStackTrace()[1].getMethodName(), '\n');
   return offscreen_buffer;
   //image(offscreen_buffer,0,0,_input_image.width,_input_image.height);
-  
 }
 
 
 void run_split(PImage _input_image, float _x, float _y, float _w, float _h, int _input_index, int _string_index) {
+  log_to_file("Entering " + Thread.currentThread().getStackTrace()[1].getMethodName(), '\n');
+  log_to_file(_input_image+"-"+_x+"-"+_y+"-"+_w+"-"+_h+"-"+_input_index+"-"+_string_index, '\n');
   int new_index = _input_index;
   offscreen_buffer.beginDraw();
   offscreen_buffer.pushStyle();
@@ -20,7 +26,7 @@ void run_split(PImage _input_image, float _x, float _y, float _w, float _h, int 
     strokeWeight(1.0);
     offscreen_buffer.stroke(0, 200, 0);
     offscreen_buffer.rect(_x, _y, _w, _h);
-    brd_layer_string[_string_index]+=output_rect_at(1,_x, _y, _w, _h);
+    brd_layer_string[_string_index]+=output_rect_at(1, _x, _y, _w, _h);
     // output.print(1+","+(int)_x+","+(int)_y+","+(int)_w);
   } else {
     if (new_index>0) {
@@ -29,14 +35,11 @@ void run_split(PImage _input_image, float _x, float _y, float _w, float _h, int 
       for (int i=0; i<4; i++) {
         run_split(_input_image, _x+(i%2)*_w*0.5, _y+floor(i/2)*_h*0.5, _w*0.5, _h*0.5, new_index, _string_index);
       }
-    } else {
-      //offscreen_buffer.stroke(0, 0, 255);
-      offscreen_buffer.fill(255);
-      offscreen_buffer.rect(_x, _y, _w, _h);
     }
   }
   offscreen_buffer.popStyle();
   offscreen_buffer.endDraw();
+  log_to_file("Exiting " + Thread.currentThread().getStackTrace()[1].getMethodName(), '\n');
 }
 
 boolean check_if_solved(PImage _input_image, int _x, int _y, int _w, int _h) {
