@@ -1,9 +1,25 @@
+void run_qt_thread() {
+  full_pixel_count = number_of_thumbs*result_width*result_height;
+  qt_count = 0;
+  for (int i=0; i<number_of_thumbs; i++) {
+    debug_log_output(i+" of "+number_of_thumbs);
+    if (DEBUG_DEFAULTS) {
+      image_array[2+i]=quadtree(image_array[2+i], DEFAULT_NUMBER_OF_ITERATIONS, i);
+    } else {
+      image_array[2+i]=quadtree(image_array[2+i], number_of_iterations, i);
+    }
+  }
+  full_pixel_count = 1;
+  qt_count = 1;
+}
+
 PImage quadtree(PImage _input_image, int _number_of_iterations, int _string_index) {
   log_to_file("Entering " + Thread.currentThread().getStackTrace()[1].getMethodName(), '\n');
+
   offscreen_buffer = createGraphics(_input_image.width, _input_image.height);
-   offscreen_buffer.beginDraw();
-    offscreen_buffer.background(255);
-     offscreen_buffer.endDraw();
+  offscreen_buffer.beginDraw();
+  offscreen_buffer.background(255);
+  offscreen_buffer.endDraw();
   _input_image.loadPixels();
   brd_layer_string[_string_index] = "";
   run_split(_input_image, 0, 0, _input_image.width, _input_image.height, _number_of_iterations, _string_index);
@@ -27,7 +43,7 @@ void run_split(PImage _input_image, float _x, float _y, float _w, float _h, int 
     offscreen_buffer.stroke(0, 200, 0);
     offscreen_buffer.rect(_x, _y, _w, _h);
     brd_layer_string[_string_index]+=output_rect_at(1, _x, _y, _w, _h);
-    // output.print(1+","+(int)_x+","+(int)_y+","+(int)_w);
+    qt_count += _w*_h;
   } else {
     if (new_index>0) {
       if (DEBUG_MODE_1) println("new_index: "+new_index);
@@ -35,10 +51,15 @@ void run_split(PImage _input_image, float _x, float _y, float _w, float _h, int 
       for (int i=0; i<4; i++) {
         run_split(_input_image, _x+(i%2)*_w*0.5, _y+floor(i/2)*_h*0.5, _w*0.5, _h*0.5, new_index, _string_index);
       }
+    } else {
+      qt_count += _w*_h;
     }
   }
+
+
   offscreen_buffer.popStyle();
   offscreen_buffer.endDraw();
+
   log_to_file("Exiting " + Thread.currentThread().getStackTrace()[1].getMethodName(), '\n');
 }
 

@@ -35,7 +35,7 @@ boolean DEBUG_DEFAULTS = true;
   DEFAULTS
  --------------
  */
-int DEFAULT_NUMBER_OF_ITERATIONS = 4;
+int DEFAULT_NUMBER_OF_ITERATIONS = 6;
 int DEFAULT_WINDOW_WIDTH = 1333;
 int DEFAULT_WINDOW_HEIGHT = 500;
 
@@ -46,6 +46,8 @@ int DEFAULT_WINDOW_HEIGHT = 500;
 // algorithem properties:
 int number_of_iterations = 4;
 PGraphics offscreen_buffer;
+int qt_count = 0;
+int full_pixel_count = 1;
 
 
 /*
@@ -60,8 +62,8 @@ int number_of_thumbs;
 int number_of_thumbs_squared;
 int size_of_thumb;
 int thumb_gap;
-int result_width;
-int result_height;
+int result_width=500;
+int result_height=500;
 
 /*
   UX/UI
@@ -133,8 +135,7 @@ void setup() {
 
 
   font = createFont("arial.ttf", 24);
-  result_width = 500;
-  result_height = 500;
+
   image_array = new PImage[9];
 
   pg_preview = createGraphics(height, height);
@@ -256,6 +257,8 @@ void draw() {
   } else {
     image(pg_preview, height*2, 0, height, height);
   }
+  
+  draw_qt_progress();
 }
 
 
@@ -353,14 +356,7 @@ void keyPressed() {
     export_to_layers();
     exit();
   } else if (key == 'k') {
-    for (int i=0; i<number_of_thumbs; i++) {
-      debug_log_output(i+" of "+number_of_thumbs);
-      if (DEBUG_DEFAULTS) {
-        image_array[2+i]=quadtree(image_array[2+i], DEFAULT_NUMBER_OF_ITERATIONS, i);
-      } else {
-        image_array[2+i]=quadtree(image_array[2+i], number_of_iterations, i);
-      }
-    }
+    thread("run_qt_thread");
   } else {
   }
   log_to_file("Exiting " + Thread.currentThread().getStackTrace()[1].getMethodName(), '\n');
@@ -381,4 +377,15 @@ void fileSelected(File selection) {
 
 void debug_log_output(String input) {
   //println(input);
+}
+
+void draw_qt_progress() {
+  float temp_ratio = float(qt_count)/float(full_pixel_count);
+  stroke(0);
+  strokeWeight(4);
+  fill(255);
+  rect(width*0.15, height-height*0.05, width*0.1, height*0.05);
+  noStroke();
+  fill(127-127*temp_ratio, 255*temp_ratio, 0);
+  rect(width*0.15+3, height-height*0.05+3, temp_ratio*width*0.1+temp_ratio*(-3-3), height*0.05-3-3);
 }
