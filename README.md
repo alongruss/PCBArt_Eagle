@@ -16,12 +16,12 @@ Working features:
 * exports an Eagle .brd file (xml).
 * exports image files of the layers and the final preview.
 * logs functions to log file.
+* progress bar.
 
 TODO:
 * format and refactor code (unreadable atm).
 * check for image file validity in format, filesize, number of pixels.
 * commit to the main 6 layers by having a hardcoded DEFAULT state.
-* progress bar?
 * import existing .brd file.
 * option for SVG vector files using the Geomartive library.
 * consolidate log file writing method with .brd export method.?
