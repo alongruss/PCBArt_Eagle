@@ -38,42 +38,78 @@ public class Quad_Class_Thread extends Thread {
   } 
 
   public void run() {
-    // check for fast exit states:
 
-    if (w>=1) { // is this quad smaller than a pixel?
-      //if (current_iteration>0) { //is this a potential parent quad?
-      //println("than we should check if it is splitable");
-      boolean is_splitable = check_if_splitable();
-      //println(is_splitable);
-      if (is_splitable) {
-        split_quad();
-      } else { //this is a a leaf quad
-        // therefore we should render
-        my_color=color(255, 0, 0);
-        rect_array[BRD_id] = (Rect_Class[]) append(rect_array[BRD_id], new Rect_Class(x, y, w, h, my_color));
-        qt_count += w*h;
+    /*
+       does this pass a uniformity check?
+     
+     yes -> what color am I? draw me!
+     
+     no  -> am I the last iteration?
+     
+     if so, draw me as black
+     
+     if not split me
+     
+     
+     */
+
+    if (check_uniform()) {
+      if ((( BRD_layer_images[BRD_id].get(int(x), int(y)))>> 16 & 0xFF)==0) {
+        rect_array[BRD_id] = (Rect_Class[]) append(rect_array[BRD_id], new Rect_Class(x, y, w, h, color(w, current_iteration*15, 60)));
       }
-    } else {
-      finished = true;
+    } else { // is non uniform
+      if (current_iteration==0) {
+          rect_array[BRD_id] = (Rect_Class[]) append(rect_array[BRD_id], new Rect_Class(x, y, w, h, color(w, current_iteration*15, 60)));
+      } else { // non last iteration and non uniform
+        split_quad();
+      }
     }
+
+
+
+    //black=false;
+    //if (w>0&&current_iteration>-1) { 
+    //  if (check_non_uniform_white()) { //if non uniform
+    //    if (current_iteration>0) { //if quad is not the last iteration
+    //      if (w>1) {
+    //        split_quad();
+    //        black=false;
+    //      } else if (w==1) {
+    //        black=true;
+    //        finished=true;
+    //      }
+    //    } else { //if quad is the last iteration
+    //      black=true;
+    //      finished=true;
+    //    }
+    //    if (black) {
+    //      rect_array[BRD_id] = (Rect_Class[]) append(rect_array[BRD_id], new Rect_Class(x, y, w, h, color(w, current_iteration*15, 60)));
+    //    }
+    //  } else { 
+    //    black=false;
+    //    finished=true;
+    //  }
+    //}
   }
 
-  boolean check_if_splitable() {
-    if (current_iteration>0) {
-      //go over the pixels and find out if any is bigger than 127
-      for (int y_index=0; y_index<h; y_index++) {
-        for (int x_index=0; x_index<w; x_index++) {
-          //int i_index = (x_index+y_index*w)+x+y+y_index*abs(test_image_1.width-w);
-          //int current_pixel = (test_image_1.pixels[i_index]) >> 16 & 0xFF;
-          int current_pixel =   BRD_layer_images[BRD_id].get(int(x+x_index), int(y+y_index))>> 16 & 0xFF;
-          if (current_pixel<127) {
-            return true;
-          }
+
+  boolean check_uniform() {
+    int first_pixel= ( BRD_layer_images[BRD_id].get(int(x), int(y)))>> 16 & 0xFF;
+    for (int y_index=0; y_index<h; y_index++) {
+      for (int x_index=0; x_index<w; x_index++) {
+        //int i_index = (x_index+y_index*w)+x+y+y_index*abs(test_image_1.width-w);
+        //int current_pixel = (test_image_1.pixels[i_index]) >> 16 & 0xFF;
+        int current_pixel =  ( BRD_layer_images[BRD_id].get(int(x+x_index), int(y+y_index)))>> 16 & 0xFF;
+        if (current_pixel!=first_pixel) {
+          return false;
         }
       }
     }
-    return false;
+    return true;
   }
+
+
+
 
   void split_quad() {
     quad_thread_array = new Quad_Class_Thread[4];

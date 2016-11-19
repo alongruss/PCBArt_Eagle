@@ -85,7 +85,7 @@ String file_location = "";
  --------------
  */
 Quad_Class_Thread outer_thread;
-int number_of_iterations = 8;
+int number_of_iterations = 12;
 Rect_Class[][] rect_array;
 int qt_count = 0;
 int full_pixel_count = 1;
@@ -97,7 +97,7 @@ void settings() {
 }
 
 void setup() {
-  surface.setTitle("PCB as ART ver.0.2.0");
+  surface.setTitle("PCB as ART ver.0.2.2");
   setup_UI();
   rect_array = new Rect_Class[6][0];
   //for (int i=0;i<rect_array.length;i++){
@@ -138,13 +138,13 @@ void draw() {
       }
     }
 
-    for (int i=0; i<rect_array.length; i++) {
-      if (rect_array[i]!=null) {
-        for (int j=0; j<rect_array[i].length; j++) {
-          rect_array[i][j].display();
+   //for (int i=0; i<rect_array.length; i++) {
+      if (rect_array[3]!=null) {
+        for (int j=0; j<rect_array[3].length; j++) {
+          rect_array[3][j].display();
         }
       }
-    }
+    //}
 
     if (output_preview_image!=null) {
       image(output_preview_image, DEFAULT_WINDOW_WIDTH-DEFAULT_IMAGE_WIDTH, 0, DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT);
