@@ -1,6 +1,6 @@
 # PCBArt_Eagle
 Version 0.2.2
-Last edited: 17/11/16.
+Last edited: 19/11/16.
 Created by: Alon Gruss.
 
 Converts an image into a 2-layerd PCB Eagle .brd file
