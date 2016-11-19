@@ -21,9 +21,10 @@ Working features:
 * preview of layers and expected result.
 * exports an Eagle .brd file (xml).
 
-* progress bar.
+
 
 TODO:
+* progress bar.
 * import existing .brd file.
 * option for SVG vector files using the Geomartive library.
 * logs functions to log file.
