@@ -1,12 +1,12 @@
 # PCBArt_Eagle
-Version 0.2.2
-Last edited: 19/11/16.
+Version 0.2.4
+Last edited: 20/11/16.
 Created by: Alon Gruss.
 
 Converts an image into a 2-layerd PCB Eagle .brd file
  The app works in following manner:
- image > brightness layers > [BITWISE COMPOSE BRD LAYERS] > quadtree > export to xml polygons
- (while constantly giving back visual feedback)
+ image > threshold layers > [BITWISE COMPOSE BRD LAYERS] > quadtree > export to xml polygons
+ (while giving back visual feedback)
 
 Working features:
 * formated and refactored code.
