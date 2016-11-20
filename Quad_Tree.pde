@@ -52,44 +52,19 @@ public class Quad_Class_Thread extends Thread {
      
      
      */
-
-    if (check_uniform()) {
-      if ((( BRD_layer_images[BRD_id].get(int(x), int(y)))>> 16 & 0xFF)==0) {
-        rect_array[BRD_id] = (Rect_Class[]) append(rect_array[BRD_id], new Rect_Class(x, y, w, h, color(w, current_iteration*15, 60)));
-      }
-    } else { // is non uniform
-      if (current_iteration==0) {
+    if (w>0) {
+      if (check_uniform()) {
+        if ((( BRD_layer_images[BRD_id].get(int(x), int(y)))>> 16 & 0xFF)==0) {
           rect_array[BRD_id] = (Rect_Class[]) append(rect_array[BRD_id], new Rect_Class(x, y, w, h, color(w, current_iteration*15, 60)));
-      } else { // non last iteration and non uniform
-        split_quad();
+        }
+      } else { // is non uniform
+        if (current_iteration==0) {
+          rect_array[BRD_id] = (Rect_Class[]) append(rect_array[BRD_id], new Rect_Class(x, y, w, h, color(w, current_iteration*15, 60)));
+        } else { // non last iteration and non uniform
+          split_quad();
+        }
       }
     }
-
-
-
-    //black=false;
-    //if (w>0&&current_iteration>-1) { 
-    //  if (check_non_uniform_white()) { //if non uniform
-    //    if (current_iteration>0) { //if quad is not the last iteration
-    //      if (w>1) {
-    //        split_quad();
-    //        black=false;
-    //      } else if (w==1) {
-    //        black=true;
-    //        finished=true;
-    //      }
-    //    } else { //if quad is the last iteration
-    //      black=true;
-    //      finished=true;
-    //    }
-    //    if (black) {
-    //      rect_array[BRD_id] = (Rect_Class[]) append(rect_array[BRD_id], new Rect_Class(x, y, w, h, color(w, current_iteration*15, 60)));
-    //    }
-    //  } else { 
-    //    black=false;
-    //    finished=true;
-    //  }
-    //}
   }
 
 

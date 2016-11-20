@@ -62,7 +62,7 @@ void export_BRD() {
 
 void write_BRD_rect_at(int _layer, float _xpos, float _ypos, float _width, float _height) {
   String output_line;
-  output_line = ("<rectangle x1=\""+_xpos+"\" y1=\""+_ypos+"\" x2=\""+(_xpos+_width)+"\" y2=\""+(_ypos+_height)+"\" layer=\""+_layer+"\"/>"+"\n");
+  output_line = ("<rectangle x1=\""+_xpos*BRD_scalar+"\" y1=\""+_ypos*BRD_scalar+"\" x2=\""+(_xpos+_width)*BRD_scalar+"\" y2=\""+(_ypos+_height)*BRD_scalar+"\" layer=\""+_layer+"\"/>"+"\n");
   BRD_writer.println(output_line);
 }
 

@@ -2,27 +2,14 @@
 PCBArt
  ------
  
- ver 0.2.2
+ ver 0.2.4
  Program by: Alon Gruss.
- Last Edited in: 17/11/16.
+ Last Edited in: 20/11/16.
  
  The app works in following manner:
  image > brightness layers > [BITWISE COMPOSE BRD LAYERS] > export to xml polygons
  (while constantly giving back visual feedback)
  
- TODO:
- * reimplament quad tree
- * make it paralel
- * export to layers
- 
- Done:
- * Image loading validity
- > file type, data validity and dimensions limit.
- 
- Questions:
- 
- 
- */
 
 ///////////////////////safe-zone-start/////////////////////////////
 /*
@@ -79,6 +66,7 @@ PImage output_preview_image;
 boolean image_loaded = false;
 PrintWriter BRD_writer;
 String file_location = "";
+float BRD_scalar = 0.075;
 
 /*
   QUADTREE
