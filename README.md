@@ -24,6 +24,7 @@ Working features:
 
 
 TODO:
+* Dithering!
 * progress bar.
 * import existing .brd file.
 * option for SVG vector files using the Geomartive library.
