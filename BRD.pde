@@ -18,43 +18,43 @@ void export_BRD() {
   setup_BRD_file();
   write_BRD_prefix();
 
- //30 29 01 16 21 22
-    if (rect_array[0]!=null) {
-      for (int j=0; j<rect_array[0].length; j++) {
-        write_BRD_rect_at(30,rect_array[0][j].x,rect_array[0][j].y,rect_array[0][j].w,rect_array[0][j].h);
-      }
+  //30 29 01 16 21 22
+  if (rect_array[0]!=null) {
+    for (int j=0; j<rect_array[0].length; j++) {
+      write_BRD_rect_at(30, rect_array[0][j].x, rect_array[0][j].y, rect_array[0][j].w, rect_array[0][j].h);
     }
-    
-    if (rect_array[1]!=null) {
-      for (int j=0; j<rect_array[1].length; j++) {
-        write_BRD_rect_at(29,rect_array[1][j].x,rect_array[1][j].y,rect_array[1][j].w,rect_array[1][j].h);
-      }
+  }
+
+  if (rect_array[1]!=null) {
+    for (int j=0; j<rect_array[1].length; j++) {
+      write_BRD_rect_at(29, rect_array[1][j].x, rect_array[1][j].y, rect_array[1][j].w, rect_array[1][j].h);
     }
-    
-    if (rect_array[2]!=null) {
-      for (int j=0; j<rect_array[2].length; j++) {
-        write_BRD_rect_at(1,rect_array[2][j].x,rect_array[2][j].y,rect_array[2][j].w,rect_array[2][j].h);
-      }
+  }
+
+  if (rect_array[2]!=null) {
+    for (int j=0; j<rect_array[2].length; j++) {
+      write_BRD_rect_at(1, rect_array[2][j].x, rect_array[2][j].y, rect_array[2][j].w, rect_array[2][j].h);
     }
-    
-    if (rect_array[3]!=null) {
-      for (int j=0; j<rect_array[3].length; j++) {
-        write_BRD_rect_at(16,rect_array[3][j].x,rect_array[3][j].y,rect_array[3][j].w,rect_array[3][j].h);
-      }
+  }
+
+  if (rect_array[3]!=null) {
+    for (int j=0; j<rect_array[3].length; j++) {
+      write_BRD_rect_at(16, rect_array[3][j].x, rect_array[3][j].y, rect_array[3][j].w, rect_array[3][j].h);
     }
-    
-    if (rect_array[4]!=null) {
-      for (int j=0; j<rect_array[4].length; j++) {
-        write_BRD_rect_at(21,rect_array[4][j].x,rect_array[4][j].y,rect_array[4][j].w,rect_array[4][j].h);
-      }
+  }
+
+  if (rect_array[4]!=null) {
+    for (int j=0; j<rect_array[4].length; j++) {
+      write_BRD_rect_at(21, rect_array[4][j].x, rect_array[4][j].y, rect_array[4][j].w, rect_array[4][j].h);
     }
-    
-    if (rect_array[5]!=null) {
-      for (int j=0; j<rect_array[5].length; j++) {
-        write_BRD_rect_at(22,rect_array[5][j].x,rect_array[5][j].y,rect_array[5][j].w,rect_array[5][j].h);
-      }
+  }
+
+  if (rect_array[5]!=null) {
+    for (int j=0; j<rect_array[5].length; j++) {
+      write_BRD_rect_at(22, rect_array[5][j].x, rect_array[5][j].y, rect_array[5][j].w, rect_array[5][j].h);
     }
- 
+  }
+
 
   write_BRD_suffix();
   BRD_close();

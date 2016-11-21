@@ -20,6 +20,29 @@ void init_output_preview() {
   output_preview_image = createImage(DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT, RGB);
 }
 
+PImage dither(PImage _input_for_dither, float _input_value) {
+   _input_for_dither.copy(input_image, 0, 0, resized_input_image.width, resized_input_image.height, 0, 0, _input_for_dither.width, _input_for_dither.height);
+  _input_for_dither.loadPixels();
+  for (int y=0; y<_input_for_dither.height-1; y++) {
+    for (int x=0; x<_input_for_dither.width-1; x++) {
+      int oldpixel = constrain((_input_for_dither.pixels[x+y*_input_for_dither.width] >> 16 & 0xFF)+int(255.0*(1-_input_value)-127.0),0,255);
+      int newpixel  = 255*round((oldpixel)/(255.0));
+      _input_for_dither.pixels[x+y*_input_for_dither.width] = color(newpixel);
+      int quant_error  = oldpixel - newpixel;
+      float color_1 = (((_input_for_dither.pixels[(x+1)+(y+0)*_input_for_dither.width]>> 16 & 0xFF) + quant_error * 7/ 16));
+      float color_2 = (((_input_for_dither.pixels[(x-1)+(y+1)*_input_for_dither.width]>> 16 & 0xFF) + quant_error * 3/ 16));
+      float color_3 = (((_input_for_dither.pixels[(x+0)+(y+1)*_input_for_dither.width]>> 16 & 0xFF) + quant_error * 5/ 16));
+      float color_4 = (((_input_for_dither.pixels[(x+1)+(y+1)*_input_for_dither.width]>> 16 & 0xFF) + quant_error * 1 / 16));
+      _input_for_dither.pixels[(x+1)+(y+0)*_input_for_dither.width] = color(color_1);
+      _input_for_dither.pixels[(x-1)+(y+1)*_input_for_dither.width] = color(color_2);
+      _input_for_dither.pixels[(x+0)+(y+1)*_input_for_dither.width] = color(color_3);
+      _input_for_dither.pixels[(x+1)+(y+1)*_input_for_dither.width] = color(color_4);
+    }
+  }
+  _input_for_dither.updatePixels();
+  return(_input_for_dither);
+}
+
 PImage run_threshold(PImage _source_image, PImage _input_image, float _input_value) {
   float temp_brightness=0;
   _input_image.loadPixels();

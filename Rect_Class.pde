@@ -16,8 +16,8 @@ class Rect_Class {
     pushStyle();
     noStroke();
     strokeWeight(0.5);
-    stroke(255,0,0,20);
-    fill(c,100);
+    stroke(255, 0, 0, 20);
+    fill(c, 100);
     rect(0, 0, w, h);
     popStyle();
     popMatrix();

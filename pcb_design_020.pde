@@ -2,18 +2,18 @@
 PCBArt
  ------
  
- ver 0.2.4
+ ver 0.2.5
  Program by: Alon Gruss.
- Last Edited in: 20/11/16.
+ Last Edited in: 21/11/16.
  
  The app works in following manner:
  image > brightness layers > [BITWISE COMPOSE BRD LAYERS] > export to xml polygons
  (while constantly giving back visual feedback)
  
-
-///////////////////////safe-zone-start/////////////////////////////
+ 
+ ///////////////////////safe-zone-start/////////////////////////////
 /*
-  UI
+ UI
  --------------
  */
 import g4p_controls.*;
@@ -66,14 +66,14 @@ PImage output_preview_image;
 boolean image_loaded = false;
 PrintWriter BRD_writer;
 String file_location = "";
-float BRD_scalar = 0.075;
+float BRD_scalar = 0.14;
 
 /*
   QUADTREE
  --------------
  */
 Quad_Class_Thread outer_thread;
-int number_of_iterations = 12;
+int number_of_iterations = 5;
 Rect_Class[][] rect_array;
 int qt_count = 0;
 int full_pixel_count = 1;
@@ -94,8 +94,8 @@ void setup() {
 }
 
 void draw() {
- 
- //loading_percent = mouseX/float(width);
+
+  //loading_percent = mouseX/float(width);
   background(200);
   stroke(0);
   fill(100);
@@ -126,12 +126,12 @@ void draw() {
       }
     }
 
-   //for (int i=0; i<rect_array.length; i++) {
-      if (rect_array[3]!=null) {
-        for (int j=0; j<rect_array[3].length; j++) {
-          rect_array[3][j].display();
-        }
+    //for (int i=0; i<rect_array.length; i++) {
+    if (rect_array[3]!=null) {
+      for (int j=0; j<rect_array[3].length; j++) {
+        rect_array[3][j].display();
       }
+    }
     //}
 
     if (output_preview_image!=null) {
