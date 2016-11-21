@@ -20,11 +20,11 @@ Working features:
 * realtime GUI sliders using the G4P library.
 * preview of layers and expected result.
 * exports an Eagle .brd file (xml).
-
+* Dithering! (Floyd–Steinberg dithering)
 
 
 TODO:
-* Dithering!
+
 * progress bar.
 * import existing .brd file.
 * option for SVG vector files using the Geomartive library.
