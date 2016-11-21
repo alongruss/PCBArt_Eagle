@@ -6,7 +6,7 @@ void copy_input_image_to_resized() {
 void copy_resized_image_to_brightness_layers() {
   for (int i=0; i<brightness_layer_images.length; i++) {
     brightness_layer_images[i] = createImage(DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT, RGB);
-    brightness_layer_images[i].copy(input_image, 0, 0, resized_input_image.width, resized_input_image.height, 0, 0, brightness_layer_images[i].width, brightness_layer_images[i].height);
+    brightness_layer_images[i].copy(resized_input_image, 0, 0, resized_input_image.width, resized_input_image.height, 0, 0, brightness_layer_images[i].width, brightness_layer_images[i].height);
   }
 }
 
@@ -21,7 +21,7 @@ void init_output_preview() {
 }
 
 PImage dither(PImage _input_for_dither, float _input_value) {
-   _input_for_dither.copy(input_image, 0, 0, resized_input_image.width, resized_input_image.height, 0, 0, _input_for_dither.width, _input_for_dither.height);
+   _input_for_dither.copy(resized_input_image, 0, 0, resized_input_image.width, resized_input_image.height, 0, 0, _input_for_dither.width, _input_for_dither.height);
   _input_for_dither.loadPixels();
   for (int y=0; y<_input_for_dither.height-1; y++) {
     for (int x=0; x<_input_for_dither.width-1; x++) {
