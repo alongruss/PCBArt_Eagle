@@ -73,7 +73,7 @@ float BRD_scalar = 0.14;
  --------------
  */
 Quad_Class_Thread outer_thread;
-int number_of_iterations = 5;
+int number_of_iterations = 7;
 Rect_Class[][] rect_array;
 int qt_count = 0;
 int full_pixel_count = 1;

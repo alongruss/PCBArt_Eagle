@@ -24,8 +24,8 @@ void setup_sliders() {
     slider_array[i]=new GCustomSlider(this, DEFAULT_IMAGE_WIDTH+(i%3)*DEFAULT_IMAGE_SCREEN_PREVIEW_WIDTH, floor(i/3)*DEFAULT_IMAGE_SCREEN_PREVIEW_HEIGHT, DEFAULT_IMAGE_SCREEN_PREVIEW_WIDTH, DEFAULT_IMAGE_SCREEN_PREVIEW_HEIGHT, "blue18px");
     slider_array[i].setValue(float(i)/float(slider_array.length));
     slider_array[i].setEasing(10.0);
-    //brightness_layer_images[i]=run_threshold(resized_input_image, brightness_layer_images[i], slider_array[i].getValueF()*255.0);
-    brightness_layer_images[i]=dither(brightness_layer_images[i],slider_array[i].getValueF());
+    brightness_layer_images[i]=run_threshold(resized_input_image, brightness_layer_images[i], slider_array[i].getValueF()*255.0);
+    //brightness_layer_images[i]=dither(brightness_layer_images[i],slider_array[i].getValueF());
   }
 }
 
@@ -48,8 +48,8 @@ public void handleButtonEvents(GButton button, GEvent event) {
 public void handleSliderEvents(GValueControl slider, GEvent event) { 
   for (int i=0; i<slider_array.length; i++) {
     if (slider == slider_array[i]) {
-      brightness_layer_images[i]=dither(brightness_layer_images[i],slider_array[i].getValueF());
-      //brightness_layer_images[i]=run_threshold(resized_input_image, brightness_layer_images[i], slider_array[i].getValueF()*255.0);
+      //brightness_layer_images[i]=dither(brightness_layer_images[i],slider_array[i].getValueF());
+      brightness_layer_images[i]=run_threshold(resized_input_image, brightness_layer_images[i], slider_array[i].getValueF()*255.0);
     }
   }
   compose_BRD_layers();
